@@ -1,0 +1,152 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#clusters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.cluster {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    width: 300px;
+}
+
+.cluster h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+
+.cluster-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #ccc;
+}
+
+.delete-cluster-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 20px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.delete-cluster-btn:hover {
+    background-color: darkred;
+}
+
+
+
+.item-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.thumbnail {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 20px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.delete-btn:hover {
+    background-color: darkred;
+}
+
+button#save {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button#save:hover {
+    background-color: #0056b3;
+}
+
+.editable-title {
+    border: none;
+    background-color: transparent;
+    font-size: 16px;
+    font-weight: bold;
+    width: auto;
+    margin-right: 10px;
+    cursor: pointer;
+    color: #333;
+}
+
+.editable-title:focus {
+    outline: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+
+.editable-title:hover {
+    cursor: text;
+}
+
+.preview-image {
+    position: absolute;
+    width: 300px; /* Adjust the size of the expanded image */
+    height: auto;
+    border: 2px solid #ddd;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: none;
+    pointer-events: none;
+}
