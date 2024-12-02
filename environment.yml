@@ -1,14 +1,6 @@
-name: base
+name: clustering-env
 channels:
-  - defaults
+  - https://repo.anaconda.com/pkgs/main
+  - https://repo.anaconda.com/pkgs/r
 dependencies:
-  - python=3.11
-  - conda==23.9.0
-  - setuptools
-  - pip
-  - wheel
-  - conda-content-trust
-  - conda-libmamba-solver
-  - menuinst[version='>=1.0.0a0,<2.0.0']
-  - console_shortcut_miniconda
-  - powershell_shortcut_miniconda
+  - python=3.10
