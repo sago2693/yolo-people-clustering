@@ -16,12 +16,12 @@ layers_list = range(0, 7)
 if __name__ == "__main__":
     #Load ground truth.
     df_truth = pd.read_excel('true_labels.xlsx')
-    ground_truth_dict = df_truth.groupby('cluster')['foto'].apply(list).to_dict()
+    ground_truth_dict = df_truth.groupby('cluster')['picture'].apply(list).to_dict()
 
     #Initial prediction of human crops
     model = YOLO(MODEL_NAME)
-    list_imgs = glob.glob(f"{CROPS_PATH}/*JPG")
-    model.predict(IMG_PATH,classes=[0],save=True,
+    list_imgs = glob.glob(f"{IMG_PATH}/*JPG")
+    model.predict('images/',classes=[0],save=True,
                         save_crop=True,project='humans',name="predict",
                         )
     result = tune_parameters(model, layers_list, metrics_list, thresholds, CROPS_PATH, list_imgs,ground_truth_dict)

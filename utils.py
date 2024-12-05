@@ -3,6 +3,7 @@ import faiss
 import numpy as np
 from sklearn.cluster import AgglomerativeClustering
 import torch
+import glob
 # Compute distances
 
 def compute_distances(embeddings, metric,print_time=False):
@@ -126,7 +127,7 @@ def compute_f1_lea(embeddings,embedding_keys, distance_type,clustering_threshold
 #Search best parameters
 
 
-def tune_parameters(model, layers_list, metrics_list, thresholds, CROPS_PATH, list_imgs,ground_truth_dict):
+def tune_parameters(model, layers_list, distance_metrics, clustering_thresholds, crops_path,ground_truth_dict):
 
     
     # Initialize variables to store the best metric, threshold, and F1 score
@@ -135,12 +136,14 @@ def tune_parameters(model, layers_list, metrics_list, thresholds, CROPS_PATH, li
     best_f1 = -float('inf')  # Set to negative infinity to ensure any F1 score will be higher
     best_layer_id = None
 
+    crops_keys = glob.glob(f"{crops_path}/*.jpg")
 
-    # Loop through metrics and thresholds
+
+    # Loop through YOLO layers
     for layer in layers_list:
         try:
             # Compute embeddings
-            results_on_crops = model.predict(CROPS_PATH, classes=[0], embed=[layer], project='discard')
+            results_on_crops = model.predict(crops_path, classes=[0], embed=[layer], project='discard')
         except Exception as e:
             print(f"Error encountered at layer {layer}: {e}")
             continue  # Skip to the next layer
@@ -161,10 +164,10 @@ def tune_parameters(model, layers_list, metrics_list, thresholds, CROPS_PATH, li
                 print(f"Error encountered at layer {layer}: {e}")
                 continue
 
-            for metric in metrics_list:
-                for threshold in thresholds:
+            for metric in distance_metrics:
+                for threshold in clustering_thresholds:
                     # Compute F1 score for the current combination of metric and threshold
-                    f1_score = compute_f1_lea(embeddings, list_imgs, metric, threshold,ground_truth_dict)
+                    f1_score = compute_f1_lea(embeddings, crops_keys, metric, threshold,ground_truth_dict)
                     
                     # Update best parameters if the current F1 score is higher
                     if f1_score > best_f1:
