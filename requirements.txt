@@ -1,5 +1,7 @@
 faiss_cpu==1.9.0
 Flask==2.2.5
+kaggle==1.6.17
+kagglehub==0.3.4
 pandas==2.2.3
 scikit_learn==1.5.2
 ultralytics==8.3.38

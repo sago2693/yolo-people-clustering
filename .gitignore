@@ -1,5 +1,7 @@
-*.JPG
-*.jpg
 *.json
 *.xlsx
+*.ipynb
 /face_recognition
+/old_images
+image_w_classes.csv
+*.pt
