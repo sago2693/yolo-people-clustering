@@ -37,7 +37,6 @@ def create_clusters(distances,embedding_keys, clustering_threshold=0.02,print_ti
     predicted_clusters = AgglomerativeClustering(n_clusters=None, metric='precomputed', linkage='average',
                                         distance_threshold=clustering_threshold)
     predicted_clusters.fit(distances)
-    print(predicted_clusters)
     end_time = time.time()
     execution_time = end_time - start_time
 
@@ -110,16 +109,21 @@ def f1(p_num, p_den, r_num, r_den, beta=1):
 def extract_img_name(path):
     return path.split("\\")[-1].split("/")[-1].split(".")[0]
 
+def clean_filename(filename: str) -> str:
+    if filename.lower().endswith('.jpg'):
+        return filename[:-4]  # Remove the extra '.jpg'
+    return filename  # Return the original filename if no change is needed
 
-def compute_f1_lea(embeddings,embedding_keys, distance_type,clustering_threshold,ground_truth_dict):
-    distance = compute_distances(embeddings, distance_type)
+
+def compute_f1_lea(embeddings,embedding_keys, metric,clustering_threshold,ground_truth_dict):
+    distance = compute_distances(embeddings, metric)
     sys_clusters = {k: [extract_img_name(v) for v in values] for k, values in create_clusters(distance,embedding_keys,clustering_threshold).items()}
+    ground_truth_dict_clean = {k: [clean_filename(v) for v in values] for k, values in ground_truth_dict.items()}
+    sys_mention_key_clusters =  get_mention_assignments(sys_clusters.values(),ground_truth_dict_clean.values())
+    key_mention_sys_clusters = get_mention_assignments(ground_truth_dict_clean.values(),sys_clusters.values())
 
-    sys_mention_key_clusters =  get_mention_assignments(sys_clusters.values(),ground_truth_dict.values())
-    key_mention_sys_clusters = get_mention_assignments(ground_truth_dict.values(),sys_clusters.values())
-
-    p_num, p_den = lea(list(sys_clusters.values()), list(ground_truth_dict.values()), sys_mention_key_clusters)
-    r_num, r_den = lea(list(ground_truth_dict.values()), list(sys_clusters.values()), key_mention_sys_clusters)
+    p_num, p_den = lea(list(sys_clusters.values()), list(ground_truth_dict_clean.values()), sys_mention_key_clusters)
+    r_num, r_den = lea(list(ground_truth_dict_clean.values()), list(sys_clusters.values()), key_mention_sys_clusters)
 
     return f1(p_num, p_den, r_num, r_den, beta=1)
 
@@ -168,7 +172,6 @@ def tune_parameters(model, layers_list, distance_metrics, clustering_thresholds,
                 for threshold in clustering_thresholds:
                     # Compute F1 score for the current combination of metric and threshold
                     f1_score = compute_f1_lea(embeddings, crops_keys, metric, threshold,ground_truth_dict)
-                    
                     # Update best parameters if the current F1 score is higher
                     if f1_score > best_f1:
                         best_f1 = f1_score

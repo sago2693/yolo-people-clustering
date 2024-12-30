@@ -6,6 +6,7 @@ from ultralytics import YOLO
 
 from config import *
 from utils import compute_distances, create_clusters
+import shutil
 
 
 def extract_img_name(path):
@@ -35,7 +36,8 @@ def replace_file_paths(file_dict, original_images):
 
 #Predict initial human crops
 model = YOLO(MODEL_NAME)
-results = model.predict(IMG_PATH,classes=[0],save=True,
+shutil.rmtree('humans/', ignore_errors=True)
+results = model.predict(IMG_GLOB_PATH,classes=[0],save=True,
                         save_crop=True,project='humans',name="predict",
                         )
 #Load tuned model:
@@ -48,9 +50,8 @@ results_on_crops = model.predict(model_parameters['crops_path'], classes=[0], em
 embeddings = np.array(results_on_crops)
 faiss.normalize_L2(embeddings)
 distance = compute_distances(embeddings, model_parameters['distance_type'])
-clusters = create_clusters(distance,glob.glob(f"{model_parameters['crops_path']}"),model_parameters['clustering_threshold'])
-
-images_list = glob.glob(f'{IMG_PATH}/*.jpg')
+clusters = create_clusters(distance,glob.glob(f"{model_parameters['crops_path']}/*.jpg"),model_parameters['clustering_threshold'])
+images_list = glob.glob(f'{CROPS_PATH}/*.jpg')
 images_list = [extract_img_name(img) for img in images_list]
 
 
