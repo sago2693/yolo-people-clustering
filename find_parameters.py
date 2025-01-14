@@ -2,7 +2,7 @@ import pandas as pd
 from ultralytics import YOLO
 import glob
 import numpy as np
-from utils import tune_parameters
+from utils import tune_parameters, generate_thumbnails, copy_files
 import json
 from config import *
 import shutil
@@ -43,3 +43,6 @@ if __name__ == "__main__":
         json.dump(export_data, file, indent=4)
 
     print("Model parameters saved to model_parameters.json")
+
+    copy_files('humans/predict/crops/person', 'webapp/static/images/')
+    generate_thumbnails('webapp/static/images/', 'webapp/static/thumbnails/')

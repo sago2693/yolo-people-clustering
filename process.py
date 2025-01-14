@@ -5,7 +5,7 @@ import numpy as np
 from ultralytics import YOLO
 
 from config import *
-from utils import compute_distances, create_clusters
+from utils import compute_distances, create_clusters, generate_thumbnails, copy_files
 import shutil
 
 
@@ -76,3 +76,6 @@ updated_file_dict = {int(key): list(value) for key, value in updated_file_dict.i
 #Export predicted clusters
 with open('webapp/predicted_clusters.json', 'w') as f:
     json.dump(updated_file_dict, f, indent=4)
+
+copy_files('humans/predict/crops/person', 'webapp/static/images/')
+generate_thumbnails('webapp/static/images/', 'webapp/static/thumbnails/')

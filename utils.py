@@ -1,9 +1,12 @@
-import time
 import faiss
+import glob
 import numpy as np
 from sklearn.cluster import AgglomerativeClustering
+import os
+from PIL import Image
+import shutil
+import time
 import torch
-import glob
 # Compute distances
 
 def compute_distances(embeddings, metric,print_time=False):
@@ -182,3 +185,36 @@ def tune_parameters(model, layers_list, distance_metrics, clustering_thresholds,
 
 
     return best_f1, best_metric, best_threshold, best_layer_id
+
+
+
+
+def generate_thumbnails(source_dir, target_dir, size=(150, 150)):
+    if not os.path.exists(target_dir):
+        os.makedirs(target_dir)
+    for filename in os.listdir(source_dir):
+        if filename.lower().endswith(".jpg"):
+            img_path = os.path.join(source_dir, filename)
+            thumbnail_path = os.path.join(target_dir, filename)
+            with Image.open(img_path) as img:
+                img.thumbnail(size)
+                img.save(thumbnail_path)
+
+def copy_files(src, dest):
+    try:
+        # Ensure the destination directory exists
+        os.makedirs(dest, exist_ok=True)
+
+        # Loop through all files in the source directory
+        for filename in os.listdir(src):
+            full_src_path = os.path.join(src, filename)
+            full_dest_path = os.path.join(dest, filename)
+
+            # Only copy files, not directories
+            if os.path.isfile(full_src_path):
+                if os.path.exists(full_dest_path):
+                    pass
+                else:
+                    shutil.copy(full_src_path, full_dest_path)
+    except Exception as e:
+        print(f"Error: {e}")

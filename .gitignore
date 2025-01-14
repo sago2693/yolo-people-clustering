@@ -5,3 +5,5 @@
 /old_images
 image_w_classes.csv
 *.pt
+/webapp/static/images
+/webapp/static/thumbnails
