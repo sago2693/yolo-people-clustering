@@ -10,4 +10,5 @@ in YOLOv9 format
 3. To run the cluster classification with the parameters located in ```model_parameters.json``` run ```process.py```
 
 ## Running the webapp
-1. ```cd``` into ```webapp/``` and run ```python.py```
+1. ```cd``` into ```webapp/```
+2. run ```python app.py```
