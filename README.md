@@ -5,7 +5,7 @@ in YOLOv9 format
 3. Use the test set
 
 ## Running the code
-1. Create the conda environment using the ```environment.yml``` file and install the ```requirements.txt``` file using poetry.
+1. Create the conda environment using the ```environment.yml``` file and install the required libraries using poetry ```poetry install```
 2. To do hyperparameter search run ```python find_parameters.py``` 
 3. To run the cluster classification with the parameters located in ```model_parameters.json``` run ```process.py```
 
